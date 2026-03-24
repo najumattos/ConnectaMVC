@@ -1,0 +1,64 @@
+@model IEnumerable<ConnectaMVC.Models.PacienteModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Todos Pacientes ativos</h1>
+<div>
+    <p>
+        Se Rota Coordenador : BuscarTodosPacientes() 
+    <p>
+    <p>
+        Se Rota Estudante : BuscarPacientesPorPsicologo(string idPsicologo)
+    <p>
+</div>
+<p>
+<a asp-action="Create">ADD</a>
+</p>
+<p>
+    <a >Ver arquivados</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Contato
+            </th>
+            <th>
+                Ultima Consulta
+            </th>
+            <th>
+                Psicologo Responsavel
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.NomeCompleto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.PhoneNumber)
+                </td>
+                <td>
+                    23/02/2025
+                </td>
+                <td>
+                   paciente.PsicologoResponsavel
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UsuarioId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.UsuarioId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.UsuarioId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

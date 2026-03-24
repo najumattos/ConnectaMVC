@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+      <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Ana Julia Reis de Mattos">
+    <title>Navalha Barbearia</title>
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="~/img/favicons/apple-touch-icon.png" sizes="180x180">
+    <link rel="icon" href="~/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="~/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="~/img/favicons/favicon.ico">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    @await RenderSectionAsync("styles", required: false)
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse custom-sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column d-flex" style="min-height: 85vh;">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Consultas">
+                                <i class="bi bi-calendar-check me-2"></i>Home
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Prontuarios">
+                                <i class="bi bi-journal-text me-2"></i>Prontuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Pacientes">
+                                <i class="bi bi-journal-text me-2"></i>Pacientes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Psicologos">
+                                <i class="bi bi-journal-text me-2"></i>Psicologos
+                            </a>
+                        </li>
+                        <li class="nav-item mt-auto">
+                            <a class="nav-link" asp-action="Index" asp-controller="Auth">
+                                <i class="bi bi-journal-text me-2"></i>Auth
+                            </a>
+                        </li>
+                                              
+
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4 custom-main-content">
+              <br />
+              @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="cdn.datatables.net/2.3.4/js/dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Limpa e separa o caminho atual para obter o nome do Controller.
+            // Ex: De "/Procedimento/Index" ou "/procedimento" resulta em "procedimento"
+            const currentPath = window.location.pathname.toLowerCase();
+            const pathSegments = currentPath.split('/').filter(segment => segment.length > 0);
+            const currentController = pathSegments[0]; // Pega o primeiro segmento (Controller)
+
+            // 2. Seleciona todos os links da sidebar
+            const navLinks = document.querySelectorAll('.custom-sidebar .nav-link');
+
+            // Remove a classe 'active' de todos os links antes de começar
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // 3. Itera e aplica a classe 'active'
+            navLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+
+                // Garante que o linkHref foi renderizado pelo Tag Helper e não é nulo
+                if (linkHref) {
+                    // Limpa e separa o href do link para obter o Controller
+                    const linkControllerSegments = linkHref.toLowerCase().split('/').filter(segment => segment.length > 0);
+                    const linkController = linkControllerSegments[0];
+
+                    // Compara o controller da página atual com o controller do link
+                    if (currentController === linkController) {
+                        link.classList.add('active');
+                    }
+                }
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

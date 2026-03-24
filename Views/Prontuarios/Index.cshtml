@@ -1,0 +1,70 @@
+@model IEnumerable<ConnectaMVC.Models.ProntuarioModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Todos Prontuarios ativos</h1>
+<div>
+    <p>
+        Se Rota Coordenador : BuscarTodosProntuarios(bool? true)
+    <p>
+    <p>
+        Se Rota Estudante : BuscarProntuariosPorPsicologo(string idPsicologo)
+    <p>
+</div>
+<p>
+    <a asp-action="Create">Abrir novo Prontuario</a>
+</p>
+<p>
+    <a>Ver prontuarios arquivados</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                NomePsicologo
+            </th>
+            <th>
+                NomePaciente
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataUltimaAtualizacao)
+            </th>
+ 
+            <th>
+                TipoProntuario
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PsicologoResponsavel.UsuarioId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Paciente.UsuarioId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCriacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataUltimaAtualizacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Queixas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoProntuario)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProntuarioId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ProntuarioId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProntuarioId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

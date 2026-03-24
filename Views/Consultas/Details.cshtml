@@ -1,0 +1,54 @@
+@model ConnectaMVC.Models.ConsultaModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<p>BuscarConsultasPorProntuario()</p>
+<div>
+    <h4>ConsultaModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataHoraConsulta)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DataHoraConsulta)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DuracaoConsulta)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DuracaoConsulta)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AnotacoesConsulta)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AnotacoesConsulta)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Prontuario)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Prontuario.ProntuarioId)
+        </dd>
+        <dt class="col-sm-2">
+            psico responsavel
+        </dt>
+        <dd class="col-sm-10">
+            psicologo Responsavel
+        </dd>
+        <dt class="col-sm-2">
+            status
+        </dt>
+        <dd class="col-sm-10">
+            cancelado
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ConsultaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,48 @@
+@model ConnectaMVC.Models.ConsultaModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ConsultaModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+          
+            <div class="form-group">
+                <label asp-for="DataHoraConsulta" class="control-label"></label>
+                <input asp-for="DataHoraConsulta" class="form-control" />
+                <span asp-validation-for="DataHoraConsulta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DuracaoConsulta" class="control-label"></label>
+                <input asp-for="DuracaoConsulta" class="form-control" />
+                <span asp-validation-for="DuracaoConsulta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AnotacoesConsulta" class="control-label"></label>
+                <input asp-for="AnotacoesConsulta" class="form-control" />
+                <span asp-validation-for="AnotacoesConsulta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProntuarioId" class="control-label"></label>
+                <select asp-for="ProntuarioId" class ="form-control" asp-items="ViewBag.ProntuarioId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,63 @@
+@model IEnumerable<ConnectaMVC.Models.PsicologoModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Todos Psicologos ativos</h1>
+<div>
+    <p>
+        Se Rota Coordenador : BuscarTodosPsicologos() <br />
+        BuscarTodosPsicologosPorTipo(adm/estudante)
+    <p>
+    <p>
+        Se Rota Estudante : essa tab nem aparece
+    <p>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<p>
+    Ver desativados
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Contato
+            </th>
+            <th>
+                UltimaConsulta
+            
+            </th>
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.Nome) @Html.DisplayFor(modelItem => item.Usuario.Sobrenome)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.PhoneNumber)
+            </td>
+            <td>
+                23/02/2025
+            </td>
+            <td>
+                24/02/2026
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UsuarioId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UsuarioId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UsuarioId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
