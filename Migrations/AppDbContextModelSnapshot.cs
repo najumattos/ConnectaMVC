@@ -32,6 +32,9 @@ namespace ConnectaMVC.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
+                    b.Property<DateOnly>("DataCadastro")
+                        .HasColumnType("date");
+
                     b.Property<DateTime>("DataHoraConsulta")
                         .HasColumnType("datetime(6)");
 
@@ -39,19 +42,35 @@ namespace ConnectaMVC.Migrations
                         .HasColumnType("time(6)");
 
                     b.Property<string>("ProntuarioId")
-                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("PsicologoId")
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("ConsultaId");
 
                     b.HasIndex("ProntuarioId");
 
+                    b.HasIndex("PsicologoId");
+
                     b.ToTable("Consulta");
+
+                    b.HasData(
+                        new
+                        {
+                            ConsultaId = "c5f41454-0d00-45f5-a00d-1cce66500694",
+                            AnotacoesConsulta = "Resumo sessao resumida",
+                            DataCadastro = new DateOnly(1, 1, 1),
+                            DataHoraConsulta = new DateTime(2002, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DuracaoConsulta = new TimeSpan(0, 0, 50, 0, 0),
+                            ProntuarioId = "68527bd1-63c9-4ce5-90b7-976fef420d8f",
+                            PsicologoId = "aeb9bcdf-021d-472d-8f5a-9bdbe0fbe8d1"
+                        });
                 });
 
             modelBuilder.Entity("ConnectaMVC.Models.PacienteModel", b =>
                 {
-                    b.Property<string>("UsuarioId")
+                    b.Property<string>("PacienteId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("ContatoEmergencia")
@@ -63,9 +82,25 @@ namespace ConnectaMVC.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
-                    b.HasKey("UsuarioId");
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("PacienteId");
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
 
                     b.ToTable("Paciente");
+
+                    b.HasData(
+                        new
+                        {
+                            PacienteId = "e4e84c5f-3b0a-43f3-951e-f45317d3e7b4",
+                            ContatoEmergencia = "14999009858",
+                            HistoricoPaciente = "Histórico inicial do paciente.",
+                            UsuarioId = "745baf03-ea33-4020-8959-e060cb422ff3"
+                        });
                 });
 
             modelBuilder.Entity("ConnectaMVC.Models.ProntuarioModel", b =>
@@ -88,7 +123,6 @@ namespace ConnectaMVC.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Queixas")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("TipoProntuario")
@@ -96,50 +130,71 @@ namespace ConnectaMVC.Migrations
 
                     b.HasKey("ProntuarioId");
 
-                    b.HasIndex("PacienteId");
+                    b.HasIndex("PacienteId")
+                        .IsUnique();
 
                     b.HasIndex("PsicologoResponsavelId");
 
                     b.ToTable("Prontuario");
+
+                    b.HasData(
+                        new
+                        {
+                            ProntuarioId = "68527bd1-63c9-4ce5-90b7-976fef420d8f",
+                            DataCriacao = new DateTime(2002, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataUltimaAtualizacao = new DateTime(2002, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PacienteId = "e4e84c5f-3b0a-43f3-951e-f45317d3e7b4",
+                            PsicologoResponsavelId = "aeb9bcdf-021d-472d-8f5a-9bdbe0fbe8d1",
+                            Queixas = "Paciente relata ansiedade e dificuldades para dormir.",
+                            TipoProntuario = 1
+                        });
                 });
 
             modelBuilder.Entity("ConnectaMVC.Models.PsicologoModel", b =>
                 {
-                    b.Property<string>("UsuarioId")
+                    b.Property<string>("PsicologoId")
                         .HasColumnType("varchar(255)");
-
-                    b.Property<string>("CRP")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
-                    b.Property<int>("TipoPerfil")
-                        .HasColumnType("int");
-
-                    b.HasKey("UsuarioId");
-
-                    b.ToTable("Psicologo");
-                });
-
-            modelBuilder.Entity("ConnectaMVC.Models.Tarefa", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Titulo")
+                    b.Property<string>("RegistroAcademico")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.Property<int>("TipoPerfil")
+                        .HasColumnType("int");
 
-                    b.ToTable("Tarefas");
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("PsicologoId");
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("Psicologo");
+
+                    b.HasData(
+                        new
+                        {
+                            PsicologoId = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
+                            Descricao = "LET TIME JUST FLYYYYY",
+                            RegistroAcademico = "1235545",
+                            TipoPerfil = 1,
+                            UsuarioId = "96f318ed-d7d7-4780-acc9-d953ca88cfde"
+                        },
+                        new
+                        {
+                            PsicologoId = "aeb9bcdf-021d-472d-8f5a-9bdbe0fbe8d1",
+                            Descricao = "REBIRTH OF A MAN",
+                            RegistroAcademico = "12345",
+                            TipoPerfil = 2,
+                            UsuarioId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
+                        });
                 });
 
             modelBuilder.Entity("ConnectaMVC.Models.UsuarioModel", b =>
@@ -151,19 +206,23 @@ namespace ConnectaMVC.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("longtext");
+
+                    b.Property<DateOnly>("DataCadastro")
+                        .HasColumnType("date");
 
                     b.Property<DateOnly>("DataNascimento")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Foto")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
@@ -179,10 +238,12 @@ namespace ConnectaMVC.Migrations
                         .HasColumnType("varchar(150)");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
@@ -201,18 +262,260 @@ namespace ConnectaMVC.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<int>("TipoModulo")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "5458aee0-71ca-4f08-88e8-0f03d18d6960",
+                            DataCadastro = new DateOnly(2026, 3, 26),
+                            DataNascimento = new DateOnly(2002, 4, 1),
+                            Email = "estudante@psico.com",
+                            EmailConfirmed = true,
+                            Foto = "/img/usuarios/estudante.png",
+                            LockoutEnabled = true,
+                            Nome = "Ana Julia",
+                            NormalizedEmail = "ESTUDANTE@PSICO.COM",
+                            NormalizedUserName = "ESTUDANTE@PSICO.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==",
+                            PhoneNumber = "5514920044824",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "15cfe30f-1dac-404e-85e6-02159dbed489",
+                            Sobrenome = "Estudante Psicologia",
+                            TwoFactorEnabled = false,
+                            UserName = "estudante@psico.com"
+                        },
+                        new
+                        {
+                            Id = "96f318ed-d7d7-4780-acc9-d953ca88cfde",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7cb3541f-0085-4145-b6d7-3e9ae3a300a5",
+                            DataCadastro = new DateOnly(2026, 3, 26),
+                            DataNascimento = new DateOnly(2001, 12, 19),
+                            Email = "admin@psico.com",
+                            EmailConfirmed = true,
+                            Foto = "/img/usuarios/admin.png",
+                            LockoutEnabled = true,
+                            Nome = "Tainara",
+                            NormalizedEmail = "ADMIN@PSICO.COM",
+                            NormalizedUserName = "ADMIN@PSICO.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==",
+                            PhoneNumber = "5514988060308",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5b0faad3-6502-4325-94ee-33aab11905d7",
+                            Sobrenome = "Administrador Psicologia",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@psico.com"
+                        },
+                        new
+                        {
+                            Id = "745baf03-ea33-4020-8959-e060cb422ff3",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "0565c7de-832d-4003-bdd3-5386ff2a214b",
+                            DataCadastro = new DateOnly(2026, 3, 26),
+                            DataNascimento = new DateOnly(2001, 7, 13),
+                            Email = "clinica@psico.com",
+                            EmailConfirmed = true,
+                            Foto = "/img/usuarios/clinica.png",
+                            LockoutEnabled = true,
+                            Nome = "Gallo",
+                            NormalizedEmail = "CLINICA@PSICO.COM",
+                            NormalizedUserName = "CLINICA@PSICO.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==",
+                            PhoneNumber = "5514991044050",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "ddaeca55-d4a8-40bd-8dce-21df6b31d700",
+                            Sobrenome = "Clinica Psicologia",
+                            TwoFactorEnabled = false,
+                            UserName = "clinica@psico.com"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            Name = "Estudante",
+                            NormalizedName = "ESTUDANTE"
+                        },
+                        new
+                        {
+                            Id = "96f318ed-d7d7-4780-acc9-d953ca88cfde",
+                            Name = "Coordendor",
+                            NormalizedName = "COORDENADOR"
+                        },
+                        new
+                        {
+                            Id = "e4e84c5f-3b0a-43f3-951e-f45317d3e7b4",
+                            Name = "Clinica",
+                            NormalizedName = "CLINICA"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            RoleId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
+                        },
+                        new
+                        {
+                            UserId = "96f318ed-d7d7-4780-acc9-d953ca88cfde",
+                            RoleId = "96f318ed-d7d7-4780-acc9-d953ca88cfde"
+                        },
+                        new
+                        {
+                            UserId = "745baf03-ea33-4020-8959-e060cb422ff3",
+                            RoleId = "e4e84c5f-3b0a-43f3-951e-f45317d3e7b4"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("ConnectaMVC.Models.ConsultaModel", b =>
@@ -220,17 +523,22 @@ namespace ConnectaMVC.Migrations
                     b.HasOne("ConnectaMVC.Models.ProntuarioModel", "Prontuario")
                         .WithMany("ConsultasVinculadas")
                         .HasForeignKey("ProntuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ConnectaMVC.Models.PsicologoModel", "Psicologo")
+                        .WithMany()
+                        .HasForeignKey("PsicologoId");
 
                     b.Navigation("Prontuario");
+
+                    b.Navigation("Psicologo");
                 });
 
             modelBuilder.Entity("ConnectaMVC.Models.PacienteModel", b =>
                 {
                     b.HasOne("ConnectaMVC.Models.UsuarioModel", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .WithOne()
+                        .HasForeignKey("ConnectaMVC.Models.PacienteModel", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -240,15 +548,15 @@ namespace ConnectaMVC.Migrations
             modelBuilder.Entity("ConnectaMVC.Models.ProntuarioModel", b =>
                 {
                     b.HasOne("ConnectaMVC.Models.PacienteModel", "Paciente")
-                        .WithMany()
-                        .HasForeignKey("PacienteId")
+                        .WithOne("Prontuario")
+                        .HasForeignKey("ConnectaMVC.Models.ProntuarioModel", "PacienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ConnectaMVC.Models.PsicologoModel", "PsicologoResponsavel")
-                        .WithMany()
+                        .WithMany("Prontuarios")
                         .HasForeignKey("PsicologoResponsavelId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Paciente");
@@ -259,17 +567,78 @@ namespace ConnectaMVC.Migrations
             modelBuilder.Entity("ConnectaMVC.Models.PsicologoModel", b =>
                 {
                     b.HasOne("ConnectaMVC.Models.UsuarioModel", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .WithOne()
+                        .HasForeignKey("ConnectaMVC.Models.PsicologoModel", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("ConnectaMVC.Models.UsuarioModel", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("ConnectaMVC.Models.UsuarioModel", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ConnectaMVC.Models.UsuarioModel", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("ConnectaMVC.Models.UsuarioModel", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ConnectaMVC.Models.PacienteModel", b =>
+                {
+                    b.Navigation("Prontuario");
+                });
+
             modelBuilder.Entity("ConnectaMVC.Models.ProntuarioModel", b =>
                 {
                     b.Navigation("ConsultasVinculadas");
+                });
+
+            modelBuilder.Entity("ConnectaMVC.Models.PsicologoModel", b =>
+                {
+                    b.Navigation("Prontuarios");
                 });
 #pragma warning restore 612, 618
         }

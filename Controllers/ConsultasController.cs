@@ -22,7 +22,7 @@ namespace ConnectaMVC.Controllers
         // GET: Consultas
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.ConsultaModel.Include(c => c.Prontuario);
+            var appDbContext = _context.ConsultaModel.Include(c => c.Prontuario).Include(c => c.Psicologo);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace ConnectaMVC.Controllers
 
             var consultaModel = await _context.ConsultaModel
                 .Include(c => c.Prontuario)
+                .Include(c => c.Psicologo)
                 .FirstOrDefaultAsync(m => m.ConsultaId == id);
             if (consultaModel == null)
             {
@@ -49,6 +50,7 @@ namespace ConnectaMVC.Controllers
         public IActionResult Create()
         {
             ViewData["ProntuarioId"] = new SelectList(_context.ProntuarioModel, "ProntuarioId", "ProntuarioId");
+            ViewData["PsicologoId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId");
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace ConnectaMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ConsultaId,DataHoraConsulta,DuracaoConsulta,AnotacoesConsulta,ProntuarioId")] ConsultaModel consultaModel)
+        public async Task<IActionResult> Create([Bind("ConsultaId,DataHoraConsulta,DuracaoConsulta,AnotacoesConsulta,PsicologoId,ProntuarioId,DataCadastro")] ConsultaModel consultaModel)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +68,7 @@ namespace ConnectaMVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProntuarioId"] = new SelectList(_context.ProntuarioModel, "ProntuarioId", "ProntuarioId", consultaModel.ProntuarioId);
+            ViewData["PsicologoId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId", consultaModel.PsicologoId);
             return View(consultaModel);
         }
 
@@ -83,6 +86,7 @@ namespace ConnectaMVC.Controllers
                 return NotFound();
             }
             ViewData["ProntuarioId"] = new SelectList(_context.ProntuarioModel, "ProntuarioId", "ProntuarioId", consultaModel.ProntuarioId);
+            ViewData["PsicologoId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId", consultaModel.PsicologoId);
             return View(consultaModel);
         }
 
@@ -91,7 +95,7 @@ namespace ConnectaMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("ConsultaId,DataHoraConsulta,DuracaoConsulta,AnotacoesConsulta,ProntuarioId")] ConsultaModel consultaModel)
+        public async Task<IActionResult> Edit(string id, [Bind("ConsultaId,DataHoraConsulta,DuracaoConsulta,AnotacoesConsulta,PsicologoId,ProntuarioId,DataCadastro")] ConsultaModel consultaModel)
         {
             if (id != consultaModel.ConsultaId)
             {
@@ -119,6 +123,7 @@ namespace ConnectaMVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProntuarioId"] = new SelectList(_context.ProntuarioModel, "ProntuarioId", "ProntuarioId", consultaModel.ProntuarioId);
+            ViewData["PsicologoId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId", consultaModel.PsicologoId);
             return View(consultaModel);
         }
 
@@ -132,6 +137,7 @@ namespace ConnectaMVC.Controllers
 
             var consultaModel = await _context.ConsultaModel
                 .Include(c => c.Prontuario)
+                .Include(c => c.Psicologo)
                 .FirstOrDefaultAsync(m => m.ConsultaId == id);
             if (consultaModel == null)
             {

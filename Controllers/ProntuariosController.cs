@@ -19,14 +19,14 @@ namespace ConnectaMVC.Controllers
             _context = context;
         }
 
-        // GET: Prontuarios
+        // GET: Prontuario
         public async Task<IActionResult> Index()
         {
             var appDbContext = _context.ProntuarioModel.Include(p => p.Paciente).Include(p => p.PsicologoResponsavel);
             return View(await appDbContext.ToListAsync());
         }
 
-        // GET: Prontuarios/Details/5
+        // GET: Prontuario/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -46,15 +46,15 @@ namespace ConnectaMVC.Controllers
             return View(prontuarioModel);
         }
 
-        // GET: Prontuarios/Create
+        // GET: Prontuario/Create
         public IActionResult Create()
         {
-            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "UsuarioId", "UsuarioId");
-            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "UsuarioId", "UsuarioId");
+            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "PacienteId", "PacienteId");
+            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId");
             return View();
         }
 
-        // POST: Prontuarios/Create
+        // POST: Prontuario/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -67,12 +67,12 @@ namespace ConnectaMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "UsuarioId", "UsuarioId", prontuarioModel.PacienteId);
-            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "UsuarioId", "UsuarioId", prontuarioModel.PsicologoResponsavelId);
+            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "PacienteId", "PacienteId", prontuarioModel.PacienteId);
+            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId", prontuarioModel.PsicologoResponsavelId);
             return View(prontuarioModel);
         }
 
-        // GET: Prontuarios/Edit/5
+        // GET: Prontuario/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -85,12 +85,12 @@ namespace ConnectaMVC.Controllers
             {
                 return NotFound();
             }
-            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "UsuarioId", "UsuarioId", prontuarioModel.PacienteId);
-            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "UsuarioId", "UsuarioId", prontuarioModel.PsicologoResponsavelId);
+            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "PacienteId", "PacienteId", prontuarioModel.PacienteId);
+            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId", prontuarioModel.PsicologoResponsavelId);
             return View(prontuarioModel);
         }
 
-        // POST: Prontuarios/Edit/5
+        // POST: Prontuario/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -122,12 +122,12 @@ namespace ConnectaMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "UsuarioId", "UsuarioId", prontuarioModel.PacienteId);
-            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "UsuarioId", "UsuarioId", prontuarioModel.PsicologoResponsavelId);
+            ViewData["PacienteId"] = new SelectList(_context.PacienteModel, "PacienteId", "PacienteId", prontuarioModel.PacienteId);
+            ViewData["PsicologoResponsavelId"] = new SelectList(_context.PsicologoModel, "PsicologoId", "PsicologoId", prontuarioModel.PsicologoResponsavelId);
             return View(prontuarioModel);
         }
 
-        // GET: Prontuarios/Delete/5
+        // GET: Prontuario/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -147,7 +147,7 @@ namespace ConnectaMVC.Controllers
             return View(prontuarioModel);
         }
 
-        // POST: Prontuarios/Delete/5
+        // POST: Prontuario/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

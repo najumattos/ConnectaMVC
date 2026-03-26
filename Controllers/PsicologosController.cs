@@ -19,14 +19,14 @@ namespace ConnectaMVC.Controllers
             _context = context;
         }
 
-        // GET: Psicologos
+        // GET: Psicologo
         public async Task<IActionResult> Index()
         {
             var appDbContext = _context.PsicologoModel.Include(p => p.Usuario);
             return View(await appDbContext.ToListAsync());
         }
 
-        // GET: Psicologos/Details/5
+        // GET: Psicologo/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -36,7 +36,7 @@ namespace ConnectaMVC.Controllers
 
             var psicologoModel = await _context.PsicologoModel
                 .Include(p => p.Usuario)
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.PsicologoId == id);
             if (psicologoModel == null)
             {
                 return NotFound();
@@ -45,19 +45,19 @@ namespace ConnectaMVC.Controllers
             return View(psicologoModel);
         }
 
-        // GET: Psicologos/Create
+        // GET: Psicologo/Create
         public IActionResult Create()
         {
             ViewData["UsuarioId"] = new SelectList(_context.UsuarioModel, "Id", "Id");
             return View();
         }
 
-        // POST: Psicologos/Create
+        // POST: Psicologo/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,CRP,Descricao,TipoPerfil")] PsicologoModel psicologoModel)
+        public async Task<IActionResult> Create([Bind("PsicologoId,UsuarioId,RegistroAcademico,Descricao,TipoPerfil")] PsicologoModel psicologoModel)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace ConnectaMVC.Controllers
             return View(psicologoModel);
         }
 
-        // GET: Psicologos/Edit/5
+        // GET: Psicologo/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -86,14 +86,14 @@ namespace ConnectaMVC.Controllers
             return View(psicologoModel);
         }
 
-        // POST: Psicologos/Edit/5
+        // POST: Psicologo/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UsuarioId,CRP,Descricao,TipoPerfil")] PsicologoModel psicologoModel)
+        public async Task<IActionResult> Edit(string id, [Bind("PsicologoId,UsuarioId,RegistroAcademico,Descricao,TipoPerfil")] PsicologoModel psicologoModel)
         {
-            if (id != psicologoModel.UsuarioId)
+            if (id != psicologoModel.PsicologoId)
             {
                 return NotFound();
             }
@@ -107,7 +107,7 @@ namespace ConnectaMVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PsicologoModelExists(psicologoModel.UsuarioId))
+                    if (!PsicologoModelExists(psicologoModel.PsicologoId))
                     {
                         return NotFound();
                     }
@@ -122,7 +122,7 @@ namespace ConnectaMVC.Controllers
             return View(psicologoModel);
         }
 
-        // GET: Psicologos/Delete/5
+        // GET: Psicologo/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -132,7 +132,7 @@ namespace ConnectaMVC.Controllers
 
             var psicologoModel = await _context.PsicologoModel
                 .Include(p => p.Usuario)
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.PsicologoId == id);
             if (psicologoModel == null)
             {
                 return NotFound();
@@ -141,7 +141,7 @@ namespace ConnectaMVC.Controllers
             return View(psicologoModel);
         }
 
-        // POST: Psicologos/Delete/5
+        // POST: Psicologo/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -158,7 +158,7 @@ namespace ConnectaMVC.Controllers
 
         private bool PsicologoModelExists(string id)
         {
-            return _context.PsicologoModel.Any(e => e.UsuarioId == id);
+            return _context.PsicologoModel.Any(e => e.PsicologoId == id);
         }
     }
 }

@@ -10,7 +10,8 @@ using ConnectaMVC.Models;
 
 namespace ConnectaMVC.Controllers
 {
-    public class PacientesController : Controller
+    public class PacientesController
+        : Controller
     {
         private readonly AppDbContext _context;
 
@@ -19,14 +20,14 @@ namespace ConnectaMVC.Controllers
             _context = context;
         }
 
-        // GET: Pacientes
+        // GET: Paciente
         public async Task<IActionResult> Index()
         {
             var appDbContext = _context.PacienteModel.Include(p => p.Usuario);
             return View(await appDbContext.ToListAsync());
         }
 
-        // GET: Pacientes/Details/5
+        // GET: Paciente/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -36,7 +37,7 @@ namespace ConnectaMVC.Controllers
 
             var pacienteModel = await _context.PacienteModel
                 .Include(p => p.Usuario)
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.PacienteId == id);
             if (pacienteModel == null)
             {
                 return NotFound();
@@ -45,19 +46,19 @@ namespace ConnectaMVC.Controllers
             return View(pacienteModel);
         }
 
-        // GET: Pacientes/Create
+        // GET: Paciente/Create
         public IActionResult Create()
         {
             ViewData["UsuarioId"] = new SelectList(_context.UsuarioModel, "Id", "Id");
             return View();
         }
 
-        // POST: Pacientes/Create
+        // POST: Paciente/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,ContatoEmergencia,HistoricoPaciente")] PacienteModel pacienteModel)
+        public async Task<IActionResult> Create([Bind("PacienteId,UsuarioId,ContatoEmergencia,HistoricoPaciente")] PacienteModel pacienteModel)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +70,7 @@ namespace ConnectaMVC.Controllers
             return View(pacienteModel);
         }
 
-        // GET: Pacientes/Edit/5
+        // GET: Paciente/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -86,14 +87,14 @@ namespace ConnectaMVC.Controllers
             return View(pacienteModel);
         }
 
-        // POST: Pacientes/Edit/5
+        // POST: Paciente/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UsuarioId,ContatoEmergencia,HistoricoPaciente")] PacienteModel pacienteModel)
+        public async Task<IActionResult> Edit(string id, [Bind("PacienteId,UsuarioId,ContatoEmergencia,HistoricoPaciente")] PacienteModel pacienteModel)
         {
-            if (id != pacienteModel.UsuarioId)
+            if (id != pacienteModel.PacienteId)
             {
                 return NotFound();
             }
@@ -107,7 +108,7 @@ namespace ConnectaMVC.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PacienteModelExists(pacienteModel.UsuarioId))
+                    if (!PacienteModelExists(pacienteModel.PacienteId))
                     {
                         return NotFound();
                     }
@@ -122,7 +123,7 @@ namespace ConnectaMVC.Controllers
             return View(pacienteModel);
         }
 
-        // GET: Pacientes/Delete/5
+        // GET: Paciente/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -132,7 +133,7 @@ namespace ConnectaMVC.Controllers
 
             var pacienteModel = await _context.PacienteModel
                 .Include(p => p.Usuario)
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
+                .FirstOrDefaultAsync(m => m.PacienteId == id);
             if (pacienteModel == null)
             {
                 return NotFound();
@@ -141,7 +142,7 @@ namespace ConnectaMVC.Controllers
             return View(pacienteModel);
         }
 
-        // POST: Pacientes/Delete/5
+        // POST: Paciente/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
@@ -158,7 +159,7 @@ namespace ConnectaMVC.Controllers
 
         private bool PacienteModelExists(string id)
         {
-            return _context.PacienteModel.Any(e => e.UsuarioId == id);
+            return _context.PacienteModel.Any(e => e.PacienteId == id);
         }
     }
 }

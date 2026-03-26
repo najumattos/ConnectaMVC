@@ -1,34 +1,36 @@
 @model IEnumerable<ConnectaMVC.Models.ConsultaModel>
 
 @{
-    ViewData["Title"] = "Agendamentos";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Consultas Agendadamentos Futuros</h1>
-<div>
-    <p>
-        Se Rota Coordenador : BuscarTodasConsultas()
-    <p>
-    <p>
-        Se Rota Estudante : BuscarConsultasPorPsicologo(string idPsicologo)
-    <p>
-</div>
+<h1>Index</h1>
+
 <p>
-    <a asp-action="Create">Adicionar Nova Consulta</a>
-    <a >Ver todas Consultas</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                Data Hora Consulta
-            </th>        
-            <th>
-                NomePaciente
+                @Html.DisplayNameFor(model => model.DataHoraConsulta)
             </th>
             <th>
-                NomePsicologo
+                @Html.DisplayNameFor(model => model.DuracaoConsulta)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnotacoesConsulta)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Psicologo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prontuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCadastro)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -44,7 +46,13 @@
                 @Html.DisplayFor(modelItem => item.AnotacoesConsulta)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Psicologo.PsicologoId)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Prontuario.ProntuarioId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCadastro)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ConsultaId">Edit</a> |

@@ -4,36 +4,31 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Todos Prontuarios ativos</h1>
-<div>
-    <p>
-        Se Rota Coordenador : BuscarTodosProntuarios(bool? true)
-    <p>
-    <p>
-        Se Rota Estudante : BuscarProntuariosPorPsicologo(string idPsicologo)
-    <p>
-</div>
+<h1>Index</h1>
+
 <p>
-    <a asp-action="Create">Abrir novo Prontuario</a>
-</p>
-<p>
-    <a>Ver prontuarios arquivados</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                NomePsicologo
+                @Html.DisplayNameFor(model => model.PsicologoResponsavel)
             </th>
             <th>
-                NomePaciente
+                @Html.DisplayNameFor(model => model.Paciente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataCriacao)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DataUltimaAtualizacao)
             </th>
- 
             <th>
-                TipoProntuario
+                @Html.DisplayNameFor(model => model.Queixas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoProntuario)
             </th>
             <th></th>
         </tr>
@@ -42,10 +37,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PsicologoResponsavel.UsuarioId)
+                @Html.DisplayFor(modelItem => item.PsicologoResponsavel.PsicologoId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Paciente.UsuarioId)
+                @Html.DisplayFor(modelItem => item.Paciente.PacienteId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DataCriacao)

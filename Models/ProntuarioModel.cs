@@ -8,7 +8,7 @@ namespace ConnectaMVC.Models;
 [Table("Prontuario")]
 public class ProntuarioModel
 {
-    [Key] public string ProntuarioId { get; set; }
+    [Key] public string ProntuarioId { get; set; } = Guid.NewGuid().ToString();
 
     public string PsicologoResponsavelId { get; set; }
     [ForeignKey("PsicologoResponsavelId")]
@@ -31,6 +31,6 @@ public class ProntuarioModel
 
     public string Queixas { get; set; }
     public TipoProntuarioEnum TipoProntuario { get; set; }
-    public IEnumerable<ConsultaModel> ConsultasVinculadas { get; set; }
+    public virtual ICollection<ConsultaModel> ConsultasVinculadas { get; set; } = new List<ConsultaModel>();
 }
 

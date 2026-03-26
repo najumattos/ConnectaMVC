@@ -9,8 +9,11 @@ namespace ConnectaMVC.Models;
 public class PacienteModel
 {
     [Key]
+    public string PacienteId { get; set; } = Guid.NewGuid().ToString();
+
+    [Required]
     public string UsuarioId { get; set; }
-    [ForeignKey("UsuarioId")]
+    [ForeignKey(nameof(UsuarioId))]
     public virtual UsuarioModel Usuario { get; set; }
 
     [Required] public string ContatoEmergencia { get; set; }
@@ -18,6 +21,7 @@ public class PacienteModel
     [Display(Name = "Histórico do Paciente", Prompt = "Informações como se ja faz acompanhamento, uso de medicacao, diagnosticos previos, sono, alimentacao, uso de substancias, atividade fisica"),
     StringLength(1000), Required(ErrorMessage = "Campo obrigatório")]
     public string HistoricoPaciente { get; set; }
-   //public ICollection<ProntuarioModel>? Prontuario { get; set; }
+   public virtual ProntuarioModel? Prontuario { get; set; }
+
 
 }

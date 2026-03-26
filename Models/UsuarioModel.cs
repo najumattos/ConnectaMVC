@@ -8,7 +8,6 @@ namespace ConnectaMVC.Models;
 [Table("Usuario")]
 public class UsuarioModel : IdentityUser
 {
-
     [Display(Name = "Nome do Usuário", Prompt = "Informe o nome"),
     Required(ErrorMessage = "Informe o nome do Usuario"),
     StringLength(150)]
@@ -25,9 +24,12 @@ public class UsuarioModel : IdentityUser
 
     [Display(Prompt = "Escolha uma Foto"), StringLength(300)]
     public string Foto { get; set; }
-    public TipoModuloEnum TipoModulo { get; set; }
+
+    public DateOnly DataCadastro { get; set; }
 
 
     [NotMapped] // Isso avisa ao Entity Framework para não criar uma coluna no banco para isso
     public string NomeCompleto => $"{Nome} {Sobrenome}";
+
+
 }

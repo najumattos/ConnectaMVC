@@ -12,7 +12,11 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-          
+            <div class="form-group">
+                <label asp-for="ConsultaId" class="control-label"></label>
+                <input asp-for="ConsultaId" class="form-control" />
+                <span asp-validation-for="ConsultaId" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="DataHoraConsulta" class="control-label"></label>
                 <input asp-for="DataHoraConsulta" class="form-control" />
@@ -29,8 +33,17 @@
                 <span asp-validation-for="AnotacoesConsulta" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="PsicologoId" class="control-label"></label>
+                <select asp-for="PsicologoId" class ="form-control" asp-items="ViewBag.PsicologoId"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="ProntuarioId" class="control-label"></label>
                 <select asp-for="ProntuarioId" class ="form-control" asp-items="ViewBag.ProntuarioId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataCadastro" class="control-label"></label>
+                <input asp-for="DataCadastro" class="form-control" />
+                <span asp-validation-for="DataCadastro" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
