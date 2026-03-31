@@ -10,6 +10,7 @@ public interface IUsuarioService
     Task<Result<IEnumerable<FichaUsuarioDto>>> BuscarTodosUsuarios();
     Task<Result<UserDto>> BuscarUsuarioPorId(string idUsuario);
     Task<Result> AtualizarUsuario(string idUsuario, IFormFile arquivoFoto, UserUpdateDto usuarioUpdateDto);
-    Task<Result> DesativarPerfil(string idUsuario);
+    Task<Result> DesativarCadastro(string idUsuario);
     UserDto MapearUserDto(UsuarioModel usuario);
+    Task<Result> RegistrarUsuario(RegisterDto registerDto);
 }

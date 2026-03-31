@@ -25,7 +25,7 @@ public class UsuarioService() : IUsuarioService
         throw new NotImplementedException();
     }
 
-    public Task<Result> DesativarPerfil(string idUsuario)
+    public Task<Result> DesativarCadastro(string idUsuario)
     {
         throw new NotImplementedException();
     }

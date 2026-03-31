@@ -127,7 +127,7 @@ namespace ConnectaMVC.Controllers
             return View(consultaModel);
         }
 
-        // GET: Consultas/Delete/5
+        // GET: Consultas/Desativar/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -147,8 +147,8 @@ namespace ConnectaMVC.Controllers
             return View(consultaModel);
         }
 
-        // POST: Consultas/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Consultas/Desativar/5
+        [HttpPost, ActionName("Desativar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

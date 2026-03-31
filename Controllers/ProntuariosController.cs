@@ -127,7 +127,7 @@ namespace ConnectaMVC.Controllers
             return View(prontuarioModel);
         }
 
-        // GET: Prontuario/Delete/5
+        // GET: Prontuario/Desativar/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -147,8 +147,8 @@ namespace ConnectaMVC.Controllers
             return View(prontuarioModel);
         }
 
-        // POST: Prontuario/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Prontuario/Desativar/5
+        [HttpPost, ActionName("Desativar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

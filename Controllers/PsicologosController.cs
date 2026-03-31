@@ -122,7 +122,7 @@ namespace ConnectaMVC.Controllers
             return View(psicologoModel);
         }
 
-        // GET: Psicologo/Delete/5
+        // GET: Psicologo/Desativar/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -141,8 +141,8 @@ namespace ConnectaMVC.Controllers
             return View(psicologoModel);
         }
 
-        // POST: Psicologo/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: Psicologo/Desativar/5
+        [HttpPost, ActionName("Desativar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

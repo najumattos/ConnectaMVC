@@ -19,11 +19,13 @@ public class ConsultaModel
 
      public string PsicologoId { get; set; }
      [ForeignKey(nameof(PsicologoId))]
-     public virtual PsicologoModel Psicologo { get; set; }
+     public virtual PsicologoModel ProfessorResponsavel { get; set; }
 
     public string ProntuarioId { get; set; }
     [ForeignKey(nameof(ProntuarioId))]
     public virtual ProntuarioModel Prontuario { get; set; }
 
     public DateOnly DataCadastro { get; set; }
+    [Display(Prompt = "Adicionar Foto das Anotacoes"), StringLength(300)]
+    public string FotoAnotacao { get; set; }
 }

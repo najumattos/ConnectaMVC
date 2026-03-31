@@ -7,151 +7,102 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ConnectaMVC.Data;
 using ConnectaMVC.Models;
+using ConnectaMVC.Models.ViewModels;
+using ConnectaMVC.Services.UsuarioService;
+using ConnectaMVC.Domain;
+using ConnectaMVC.Models.FormModels;
 
-namespace ConnectaMVC.Controllers
+namespace ConnectaMVC.Controllers;
+
+public class UsuariosController(IUsuarioService service) : Controller
 {
-    public class UsuariosController : Controller
+
+    /// <summary>
+    /// Busca Todos Usuarios
+    /// </summary>
+   public async Task<ActionResult> Index()
     {
-        private readonly AppDbContext _context;
-
-        public UsuariosController(AppDbContext context)
+        var result = await service.BuscarTodosUsuarios();
+        if(!result.IsSuccess)
         {
-            _context = context;
+            ViewBag.ErrorMessage = result.Error;
+            return View(Enumerable.Empty<FichaUsuarioDto>());
         }
+        return View(result.Value);
+    }
 
-        // GET: Usuarios
-        public async Task<IActionResult> Index()
+    /// <summary>
+    /// Exibe Dados Cadastrais do Usuario
+    /// </summary> 
+    public async Task<IActionResult> Details(string id)
+    {
+        var result = await service.BuscarUsuarioPorId(id);
+        return result switch
         {
-            return View(await _context.UsuarioModel.ToListAsync());
-        }
+            { IsSuccess: true } => View(result.Value), // Sucesso: Vai para a View de detalhes
+            { IsSuccess: false } => View(result.Error), // Falha: Retorna 404 com a mensagem
+            null => StatusCode(500, "Erro inesperado no servidor, serve a dor") // Caso o serviço falhe gravemente          
+        };
 
-        // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(string id)
+    }
+
+    /// <summary>
+    /// Atualiza Cadastro do Usuario
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(string id, IFormFile foto, [FromForm] UserUpdateDto usuarioUpdateDto)
+    {
+        var result = await service.AtualizarUsuario(id, foto, usuarioUpdateDto);
+        return result switch
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            // Sucesso: Redireciona para não reenviar o form ao dar F5
+            { IsSuccess: true } => RedirectToAction(nameof(Index)),
 
-            var usuarioModel = await _context.UsuarioModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioModel == null)
-            {
-                return NotFound();
-            }
+            // Falha: Volta para a View de edição mostrando o erro e mantendo os dados digitados
+            { IsSuccess: false } => View("Edit", usuarioUpdateDto),
 
-            return View(usuarioModel);
-        }
+            null => StatusCode(500, "Erro inesperado no servidor")
+        };
 
-        // GET: Usuarios/Create
-        public IActionResult Create()
+
+    }
+
+    /// <summary>
+    /// Desativa?? Cadastro do Usuario
+    /// </summary>
+    [HttpPatch("{id}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Desativar(string id)
+    {
+        var result = await service.DesativarCadastro(id);
+        return result switch
         {
-            return View();
-        }
+            { IsSuccess: true } => RedirectToAction(nameof(Index)), // Sucesso: Vai para a View de detalhes
+            { IsSuccess: false } => View("Details", result.Error), // Falha: Retorna 404 com a mensagem
+            _ => StatusCode(500, "Erro inesperado no servidor, serve a dor") // Caso o serviço falhe gravemente          
+        };
+    }
 
-        // POST: Usuarios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nome,Sobrenome,DataNascimento,Foto,DataCadastro,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] UsuarioModel usuarioModel)
+    /// <summary>
+    /// Criar Cadastro do Usuario
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]     //essencial para proteger contra ataques CSRF em aplicações MVC
+    public async Task<IActionResult> Create(RegisterDto registerDto)
+    {
+        var result = await service.RegistrarUsuario(registerDto);
+        return result switch
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(usuarioModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(usuarioModel);
-        }
+            // Sucesso: Redireciona para não reenviar o form ao dar F5
+            { IsSuccess: true } => RedirectToAction(nameof(Index)),
 
-        // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            // Falha: Volta para a View Home mostrando o erro e mantendo os dados digitados
+            { IsSuccess: false } => View("Home", registerDto),
 
-            var usuarioModel = await _context.UsuarioModel.FindAsync(id);
-            if (usuarioModel == null)
-            {
-                return NotFound();
-            }
-            return View(usuarioModel);
-        }
+            null => StatusCode(500, "Erro inesperado no servidor")
+        };
 
-        // POST: Usuarios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Nome,Sobrenome,DataNascimento,Foto,DataCadastro,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] UsuarioModel usuarioModel)
-        {
-            if (id != usuarioModel.Id)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(usuarioModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioModelExists(usuarioModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(usuarioModel);
-        }
-
-        // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var usuarioModel = await _context.UsuarioModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (usuarioModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(usuarioModel);
-        }
-
-        // POST: Usuarios/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var usuarioModel = await _context.UsuarioModel.FindAsync(id);
-            if (usuarioModel != null)
-            {
-                _context.UsuarioModel.Remove(usuarioModel);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool UsuarioModelExists(string id)
-        {
-            return _context.UsuarioModel.Any(e => e.Id == id);
-        }
     }
 }
